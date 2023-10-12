@@ -72,4 +72,15 @@ public class Leer {
         System.out.println(texto);
         return sc.nextLine();
     }
+    public static boolean introduceBoolean(String texto) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println(texto);
+        String valorEntrada = sc.nextLine().toLowerCase();
+        while (!valorEntrada.equals("true") && !valorEntrada.equals("false")) {
+            System.out.println("Debes introducir 'true' o 'false'");
+            System.out.println(texto);
+            valorEntrada = sc.nextLine().toLowerCase();
+        }
+        return Boolean.parseBoolean(valorEntrada);
+    }
 }

@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3ac48e8a-4100-4f00-bdc6-a6b123f64d96" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/libs/CheckFiles.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/libs/Leer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/classes/Departamento.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/classes/Departamentos.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/departamentos.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/nuevosEmpleados.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/classes/Empleado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/classes/Empleado.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/code/pedirEmpleado.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/libs/Leer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/libs/Leer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,9 +32,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2WZ8AWVxbrMmM5BpTpO9hsHX2P4" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -39,11 +46,12 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Alumno_FP/Desktop/NadalAraMarioDAM2/AD/NadalMarioPractica1.2/src/main/java"
+    "last_opened_file_path": "C:/Users/mario/IdeaProjects/NadalMarioPractica1.2/src/main/resources"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\mario\IdeaProjects\NadalMarioPractica1.2\src\main\resources" />
       <recent name="C:\Users\Alumno_FP\Desktop\NadalAraMarioDAM2\AD\NadalMarioPractica1.2\src\main\java" />
     </key>
   </component>
@@ -57,5 +65,9 @@
       <updated>1696928600863</updated>
     </task>
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
   </component>
 </project>

@@ -5,6 +5,7 @@ public class Empleado {
     public int sueldo;
     public int añoNacimiento;
     public int antiguedad;
+    public Departamento departamento;
 
     public Empleado() {
     }
@@ -14,6 +15,14 @@ public class Empleado {
         this.sueldo = sueldo;
         this.añoNacimiento = añoNacimiento;
         this.antiguedad = antiguedad;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
     }
 
     public String getNombre() {
