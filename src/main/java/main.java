@@ -1,10 +1,9 @@
 import classes.Departamentos;
 import classes.Empleado;
-import classes.Empresa;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 
 import libs.Leer;
@@ -71,7 +70,19 @@ public class main {
     }
 
     private static void JSONInformacionEmpresa(List<Empleado> empleados, Departamentos departamentos) {
-
+        //Para convertir a JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            System.out.println(empleados.size());
+            for(int i=0;i<empleados.size();i++){
+                String empleadosJSON = objectMapper.writeValueAsString(empleados.get(i));
+                System.out.println(empleadosJSON);
+            }
+            String departamentoJSON = objectMapper.writeValueAsString(departamentos);
+            System.out.println(departamentoJSON);
+        }catch(Exception ex){
+            System.out.println("Error al mappear");
+        }
     }
 
     private static void XMLInformacionEmpresa(List<Empleado> empleados, Departamentos departamentos) {
