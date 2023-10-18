@@ -40,7 +40,7 @@ public class main {
 
             switch (menu) {
                 case 5 -> todaLaInformacionEmpresa(empleados, departamentos);
-                case 4 -> leerNuevosEmpleadosJSON();
+                case 4 -> leerNuevosEmpleadosJSON(empleados);
                 case 3 -> asignarCadaEmpleadoDepartamento(empleados, departamentos);
                 case 2 -> departamentos = leerDepartamentos();
                 case 1 -> pedirEmpleados(empleados);
@@ -78,7 +78,7 @@ public class main {
 
     }
 
-    private static void leerNuevosEmpleadosJSON() {
+    private static void leerNuevosEmpleadosJSON(List<Empleado> empleados) {
         SimpleDateFormat formateo= new SimpleDateFormat("yyyyMMdd'_'HH-mm-ss");
         Date fecha =new Date(System.currentTimeMillis());
         String fechaBuena = formateo.format(fecha);
@@ -96,7 +96,7 @@ public class main {
                 empleadoJson = gson.fromJson(txtJson,Empleado[].class);
                 for(Empleado empleado: empleadoJson){
                     empleado.setAntiguedad(fechaBuena);
-                    System.out.println(empleado.getAntiguedad());
+                    empleados.add(empleado);
                 }
             }else{
                 System.out.println("El fichero no se puede leer");
@@ -108,13 +108,17 @@ public class main {
 
     private static void asignarCadaEmpleadoDepartamento(List<Empleado> empleados, Departamentos departamentos) {
         boolean salir = false;
+        //Recorremos toda la lista empleados dependiendo de su tamaño
         for(int i = 0;i<empleados.size();i++){
             do{
+                //Sacamos todos los nombre de los departamentos encontrados
                 System.out.println("Lista de departamentos: ");
                 for(int y=1;y<=departamentos.getDepartamentos().size();y++){
                     System.out.println("\t"+y +"."+departamentos.getDepartamentos().get(y-1).getNombre());
                 }
+                //El usuario debe introducir el departamentro al que pertenece el empleado
                 int departamentoElegido = libs.Leer.introduceEntero("Introduce el departamento que quieres para el empleado: " + empleados.get(i).getNombreEmpleado());
+                //Se introduce el departamento elegido al empleado
                 if(departamentoElegido<=departamentos.getDepartamentos().size()){
                     empleados.get(i).setDepartamento(departamentos.getDepartamentos().get(departamentoElegido-1));
                     salir = true;
@@ -152,17 +156,25 @@ public class main {
         String nombre, antiguedad;
         int sueldo, añoNacimiento;
         do {
+            //El usuario introduce todos los datos del empleado a añadir
             nombre = libs.Leer.introduceString("Introduce nombre del empleado");
             sueldo = libs.Leer.introduceEntero("Introduce sueldo del empleado");
             añoNacimiento = libs.Leer.introduceEntero("Introduce año de nacimiento del empleado");
             antiguedad = libs.Leer.introduceString("Introduce antigüedad del empleado");
+            //Se crea el nuevo empleado
             Empleado empleado = new Empleado(nombre, sueldo, añoNacimiento, antiguedad);
+            //Se añado el empleado a la lista de todos los empleados
             empleados.add(empleado);
+            //comprobamos si el fichero introducide se puede escribir
             if(libs.CheckFiles.ficheroEscribible(p)){
+                //Escribimos en el fichero
                 try(FileWriter writer = new FileWriter(p.toFile())){
+                    //Recorremos todos los empleados para escribirlos en el csv
                     for(Empleado empleadoCSV : empleados){
+                        //Creamos la linea con todos los datos del empleado para añadirla al csv
                         String linea = empleadoCSV.getNombreEmpleado()+";"+empleadoCSV.getSueldoEmpleado()+";"+
                                 empleadoCSV.getAñoNacimiento()+";"+empleadoCSV.getAntiguedad();
+                        //Escribimos la linea en el csv y saltamos la linea
                         writer.write(linea + "\n");
                     }
                     System.out.println("Escritura del empleado correcta");
@@ -172,6 +184,7 @@ public class main {
             }else{
                 System.out.println("No es posible escribir en este fichero");
             }
+            //El usuario introducira true si quiere introducir más empleados o false si no quiere introducir más
             salir = libs.Leer.introduceBoolean("Introduce true si quiere seguir añadiendo empleados, de lo contrario introduzca false");
         } while (salir);
     }
