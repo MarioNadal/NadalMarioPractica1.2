@@ -1,9 +1,8 @@
-import classes.Departamentos;
-import classes.Empleado;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import classes.*;
 import com.google.gson.Gson;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 
 import libs.Leer;
@@ -70,26 +69,67 @@ public class main {
     }
 
     private static void JSONInformacionEmpresa(List<Empleado> empleados, Departamentos departamentos) {
+        String empleadosJSON = null, departamentoJSON = null;
         //Para convertir a JSON
-        ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            System.out.println(empleados.size());
-            for(int i=0;i<empleados.size();i++){
-                String empleadosJSON = objectMapper.writeValueAsString(empleados.get(i));
-                System.out.println(empleadosJSON);
+        Gson gson = new Gson();
+        empleadosJSON = gson.toJson(empleados);
+        departamentoJSON = gson.toJson(departamentos);
+        Path p = Path.of("src/main/resources/empresa.json");
+        try {
+            //Si el archivo no esta creado lo creamos
+            if(!Files.exists(p)){
+                Files.createFile(p);
             }
-            String departamentoJSON = objectMapper.writeValueAsString(departamentos);
-            System.out.println(departamentoJSON);
-        }catch(Exception ex){
-            System.out.println("Error al mappear");
+            //comprobamos que se puede escribir en el fichero
+            if (libs.CheckFiles.ficheroEscribible(p)) {
+                //Escribimos en el fichero
+                try {
+                    Files.writeString(p,empleadosJSON + departamentoJSON);
+                } catch (IOException e) {
+                    System.out.println("Error en la escritura del json");
+                }
+            } else {
+                System.out.println("No es posible escribir en este fichero");
+            }
+        }catch(IOException ex){
+            System.out.println("Error al crear el json");
         }
     }
 
     private static void XMLInformacionEmpresa(List<Empleado> empleados, Departamentos departamentos) {
-
+    Path p = Path.of("src/main/resources/empresa.xml");
+        try {
+            //Si el archivo no esta creado lo creamos
+            if (!Files.exists(p)) {
+                Files.createFile(p);
+            }
+            //comprobamos que se puede escribir en el fichero
+            if (libs.CheckFiles.ficheroEscribible(p)) {
+                try{
+                    JAXBContext contexto = JAXBContext.newInstance(Empresa.class);
+                    //Para pasar el codigo a xml -- Marshaller
+                    Marshaller marshaller = contexto.createMarshaller();
+                    //configuramos el formato de salida
+                    marshaller.setProperty(marshaller.JAXB_FORMATTED_OUTPUT, true);
+                    Empresa empresa = new Empresa();
+                    empresa.setDepartamentos(departamentos);
+                    empresa.setEmpleados(empleados);
+                    //escribimos el archivo
+                    marshaller.marshal(empresa, p.toFile());
+                }catch(JAXBException ex){
+                    System.out.println("Error al pasar el código a XML" + ex.getErrorCode());
+                    ex.printStackTrace();
+                }
+            }else{
+                System.out.println("No es posible escribir en el fichero");
+            }
+        }catch (IOException ex){
+            System.out.println("Error al crear el xml");
+        }
     }
 
     private static void leerNuevosEmpleadosJSON(List<Empleado> empleados) {
+        //cogemos la fecha actual en una variable
         SimpleDateFormat formateo= new SimpleDateFormat("yyyyMMdd'_'HH-mm-ss");
         Date fecha =new Date(System.currentTimeMillis());
         String fechaBuena = formateo.format(fecha);
@@ -108,6 +148,25 @@ public class main {
                 for(Empleado empleado: empleadoJson){
                     empleado.setAntiguedad(fechaBuena);
                     empleados.add(empleado);
+                }
+                Path p2 = Path.of("src/main/resources/empleados.csv");
+                if(libs.CheckFiles.ficheroEscribible(p2)){
+                    //Escribimos en el fichero
+                    try(FileWriter writer = new FileWriter(p2.toFile())){
+                        //Recorremos todos los empleados para escribirlos en el csv
+                        for(Empleado empleadoCSV : empleados){
+                            //Creamos la linea con todos los datos del empleado para añadirla al csv
+                            String linea = empleadoCSV.getNombre()+";"+empleadoCSV.getSueldo()+";"+
+                                    empleadoCSV.getAño()+";"+empleadoCSV.getAntiguedad();
+                            //Escribimos la linea en el csv y saltamos la linea
+                            writer.write(linea + "\n");
+                        }
+                        System.out.println("Escritura del empleado correcta");
+                    }catch(IOException e){
+                        System.out.println("Error en la escritura del csv");
+                    }
+                }else{
+                    System.out.println("No es posible escribir en este fichero");
                 }
             }else{
                 System.out.println("El fichero no se puede leer");
@@ -128,13 +187,14 @@ public class main {
                     System.out.println("\t"+y +"."+departamentos.getDepartamentos().get(y-1).getNombre());
                 }
                 //El usuario debe introducir el departamentro al que pertenece el empleado
-                int departamentoElegido = libs.Leer.introduceEntero("Introduce el departamento que quieres para el empleado: " + empleados.get(i).getNombreEmpleado());
+                int departamentoElegido = libs.Leer.introduceEntero("Introduce el departamento que quieres para el empleado: " + empleados.get(i).getNombre());
                 //Se introduce el departamento elegido al empleado
                 if(departamentoElegido<=departamentos.getDepartamentos().size()){
-                    empleados.get(i).setDepartamento(departamentos.getDepartamentos().get(departamentoElegido-1));
+                    empleados.get(i).setDepartamento(departamentoElegido);
                     salir = true;
                 }else{
                     System.out.println("El número introducido no corresponde con un departamento");
+                    salir=false;
                 }
             }while(!salir);
         }
@@ -183,8 +243,8 @@ public class main {
                     //Recorremos todos los empleados para escribirlos en el csv
                     for(Empleado empleadoCSV : empleados){
                         //Creamos la linea con todos los datos del empleado para añadirla al csv
-                        String linea = empleadoCSV.getNombreEmpleado()+";"+empleadoCSV.getSueldoEmpleado()+";"+
-                                empleadoCSV.getAñoNacimiento()+";"+empleadoCSV.getAntiguedad();
+                        String linea = empleadoCSV.getNombre()+";"+empleadoCSV.getSueldo()+";"+
+                                empleadoCSV.getAño()+";"+empleadoCSV.getAntiguedad();
                         //Escribimos la linea en el csv y saltamos la linea
                         writer.write(linea + "\n");
                     }

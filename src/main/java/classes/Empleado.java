@@ -1,56 +1,59 @@
 package classes;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+@XmlRootElement(name = "empleado")
+@XmlAccessorType(XmlAccessType.NONE)
 public class Empleado {
-    public String nombreEmpleado;
-    public int sueldoEmpleado;
-    public int añoNacimientoEmpleado;
+    public String nombre;
+    public int sueldo;
+    public int año;
     public String antiguedadEmpleado;
-    public Departamento departamentoEmpleado;
+    public int idDep;
 
     public Empleado() {
     }
 
-    public Empleado(String nombreEmpleado, int sueldoEmpleado, int añoNacimiento, String antiguedad) {
-        this.nombreEmpleado = nombreEmpleado;
-        this.sueldoEmpleado = sueldoEmpleado;
-        this.añoNacimientoEmpleado = añoNacimiento;
+    public Empleado(String nombre, int sueldo, int año, String antiguedad) {
+        this.nombre = nombre;
+        this.sueldo = sueldo;
+        this.año = año;
         this.antiguedadEmpleado = antiguedad;
     }
 
-    public Departamento getDepartamento() {
-        return departamentoEmpleado;
+    public int getDepartamento() {
+        return idDep;
     }
 
-    public void setDepartamento(Departamento departamento) {
-        this.departamentoEmpleado = departamento;
+    public void setDepartamento(int departamento) {
+        this.idDep = departamento;
     }
-    @XmlElement
-    public String getNombreEmpleado() {
-        return nombreEmpleado;
-    }
-
-    public void setNombreEmpleado(String nombreEmpleado) {
-        this.nombreEmpleado = nombreEmpleado;
-    }
-    @XmlElement
-    public int getSueldoEmpleado() {
-        return sueldoEmpleado;
+    @XmlElement(name = "nombre")
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setSueldoEmpleado(int sueldoEmpleado) {
-        this.sueldoEmpleado = sueldoEmpleado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
-    @XmlElement
-    public int getAñoNacimiento() {
-        return añoNacimientoEmpleado;
+    @XmlElement(name = "sueldo")
+    public int getSueldo() {
+        return sueldo;
     }
 
-    public void setAñoNacimiento(int añoNacimiento) {
-        this.añoNacimientoEmpleado = añoNacimiento;
+    public void setSueldo(int sueldo) {
+        this.sueldo = sueldo;
+    }
+    @XmlElement(name = "año")
+    public int getAño() {
+        return año;
+    }
+
+    public void setAño(int añoNacimiento) {
+        this.año = añoNacimiento;
     }
     @XmlElement
     public String getAntiguedad() {
